@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARHC Social Media Asset Generator</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f7f5f0;
+        }
+        .font-serif-arhc {
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-[#1b4d3e] text-white py-4 px-6 shadow-md flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#1b4d3e] font-bold text-xl">
+                AR
+            </div>
+            <div>
+                <h1 class="font-bold text-lg tracking-wide">ARHC</h1>
+                <p class="text-xs text-emerald-200">Social Media Asset Hub</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span class="text-xs bg-emerald-800 text-emerald-100 py-1 px-2.5 rounded-full border border-emerald-600">
+                <i class="fa-solid fa-shield-halved mr-1"></i> Brand Guardrails Active
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Sidebar: Settings -->
+        <section class="lg:col-span-5 bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
+            <div>
+                <h2 class="text-xl font-bold text-[#1b4d3e] mb-1">1. Choose Your Content Pillar</h2>
+                <p class="text-xs text-slate-500 mb-4">Select a pillar to auto-generate a tailored visual theme.</p>
+                
+                <!-- Pillar Selector (3 categories) -->
+                <div class="grid grid-cols-3 gap-2 mb-4">
+                    <button onclick="selectPillar('spotlight')" id="btn-spotlight" class="pillar-btn active p-2.5 rounded-xl border-2 border-[#1b4d3e] bg-emerald-50 text-left transition-all">
+                        <i class="fa-solid fa-user-nurse text-[#d15c7e] text-lg mb-1 block"></i>
+                        <span class="font-bold text-xs block truncate">Spotlight</span>
+                        <span class="text-[9px] text-slate-500 block truncate">#TeamArthur</span>
+                    </button>
+                    <button onclick="selectPillar('volunteer')" id="btn-volunteer" class="pillar-btn p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 text-left transition-all">
+                        <i class="fa-solid fa-hands-holding text-[#d15c7e] text-lg mb-1 block"></i>
+                        <span class="font-bold text-xs block truncate">Volunteering</span>
+                        <span class="text-[9px] text-slate-500 block truncate">Corporate Partner</span>
+                    </button>
+                    <button onclick="selectPillar('demystify')" id="btn-demystify" class="pillar-btn p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 text-left transition-all">
+                        <i class="fa-solid fa-compass text-[#d15c7e] text-lg mb-1 block"></i>
+                        <span class="font-bold text-xs block truncate">Demystifying</span>
+                        <span class="text-[9px] text-slate-500 block truncate">Q&A and Planning</span>
+                    </button>
+                </div>
+
+                <!-- AI Copy & Prompt Generator -->
+                <div class="mb-5 bg-gradient-to-r from-emerald-50 to-pink-50 border border-emerald-100 rounded-xl p-4">
+                    <h3 class="text-xs font-bold text-[#1b4d3e] uppercase tracking-wider flex items-center mb-1">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1.5 text-[#d15c7e]"></i> ✨ AI Copy & Prompt Copilot
+                    </h3>
+                    <p class="text-[10px] text-slate-500 mb-3">Briefly describe the story to generate an on-brand quote & matching background prompt.</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="ai-story-input" placeholder="e.g., Local tech firm ARM visited to prune our gardens..." class="flex-1 p-2.5 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#1b4d3e]">
+                        <button onclick="triggerCopilot()" id="copilot-btn" class="bg-[#d15c7e] hover:bg-[#b04864] text-white text-xs font-bold px-3 py-2 rounded-lg shadow-sm transition-all flex items-center shrink-0">
+                            ✨ Generate
+                        </button>
+                    </div>
+                    <div id="copilot-loader" class="hidden text-[10px] text-[#1b4d3e] font-semibold mt-2 animate-pulse">
+                        <i class="fa-solid fa-circle-notch animate-spin mr-1.5"></i> Brainstorming with Gemini...
+                    </div>
+                </div>
+
+                <!-- Custom Prompt Settings -->
+                <div class="mb-4">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Background Image Generation Prompt</label>
+                    <textarea id="prompt-input" rows="2" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1b4d3e] focus:border-transparent resize-none transition-all"></textarea>
+                    <p class="text-[10px] text-slate-400 mt-1">Our prompt system automatically appends warm, realistic style terms to protect branding.</p>
+                </div>
+
+                <!-- AI Generation Action Button -->
+                <button onclick="triggerImageGeneration()" id="generate-btn" class="w-full bg-[#1b4d3e] hover:bg-emerald-900 text-white font-bold py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Generate AI Background</span>
+                </button>
+
+                <!-- Divider -->
+                <div class="flex items-center my-4">
+                    <div class="flex-grow border-t border-slate-200"></div>
+                    <span class="mx-3 text-[10px] text-slate-400 font-bold uppercase tracking-wider">OR</span>
+                    <div class="flex-grow border-t border-slate-200"></div>
+                </div>
+
+                <!-- Upload Image Section -->
+                <input type="file" id="image-upload" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                <button onclick="triggerImageUpload()" class="w-full bg-white hover:bg-slate-50 text-[#1b4d3e] border-2 border-[#1b4d3e] font-bold py-3 px-4 rounded-xl shadow-sm transition-all flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Upload Custom Photo</span>
+                </button>
+
+                <div id="loading-indicator" class="hidden mt-4 bg-emerald-50 border border-emerald-100 rounded-xl p-3 flex items-center space-x-3">
+                    <div class="animate-spin rounded-full h-5 w-5 border-2 border-[#1b4d3e] border-t-transparent"></div>
+                    <div class="flex-1">
+                        <div class="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="h-full bg-[#1b4d3e] transition-all duration-300" style="width: 5%"></div>
+                        </div>
+                        <p class="text-[10px] text-[#1b4d3e] font-semibold mt-1">Imagen is blending a premium, warm hospice scene...</p>
+                    </div>
+                </div>
+
+                <hr class="my-6 border-slate-100">
+
+                <h2 class="text-xl font-bold text-[#1b4d3e] mb-1">2. Target Channel Sizing</h2>
+                <p class="text-xs text-slate-500 mb-4">Select the optimized aspect ratio format for your target platform channel.</p>
+
+                <!-- Channel Sizing Buttons -->
+                <div class="grid grid-cols-3 gap-2 mb-6">
+                    <button onclick="selectFormat('portrait')" id="format-portrait" class="format-btn active p-2.5 rounded-xl border-2 border-[#1b4d3e] bg-emerald-50 text-center transition-all flex flex-col items-center justify-center">
+                        <i class="fa-solid fa-mobile-screen-button text-[#d15c7e] text-lg mb-1 block"></i>
+                        <span class="font-bold text-[11px] block">Portrait (4:5)</span>
+                        <span class="text-[8px] text-slate-500 block truncate w-full">LinkedIn & Insta Mobile</span>
+                    </button>
+                    <button onclick="selectFormat('square')" id="format-square" class="format-btn p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 text-center transition-all flex flex-col items-center justify-center">
+                        <i class="fa-solid fa-square text-[#d15c7e] text-lg mb-1 block"></i>
+                        <span class="font-bold text-[11px] block">Square (1:1)</span>
+                        <span class="text-[8px] text-slate-500 block truncate w-full">Insta & FB Feeds</span>
+                    </button>
+                    <button onclick="selectFormat('landscape')" id="format-landscape" class="format-btn p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 text-center transition-all flex flex-col items-center justify-center">
+                        <i class="fa-solid fa-desktop text-[#d15c7e] text-lg mb-1 block"></i>
+                        <span class="font-bold text-[11px] block">Landscape (16:9)</span>
+                        <span class="text-[8px] text-slate-500 block truncate w-full">LinkedIn Desktop</span>
+                    </button>
+                </div>
+
+                <h2 class="text-xl font-bold text-[#1b4d3e] mb-1">3. Brand Guardrail Overlays</h2>
+                <p class="text-xs text-slate-500 mb-4">Consistent layout templates are locked automatically per content pillar.</p>
+
+                <!-- Brand Guardrail Lock Indicator -->
+                <div id="layout-lock-status" class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 flex items-start space-x-3 mb-5">
+                    <div class="bg-[#1b4d3e] text-white p-2.5 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-shield-halved text-sm"></i>
+                    </div>
+                    <div>
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-[#1b4d3e] block mb-0.5">Brand Guardrail Active</span>
+                        <p class="text-xs font-bold text-slate-800" id="locked-style-title">Style Locked to Circular Frame</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5 leading-relaxed" id="locked-style-desc">Enforces consistent, face-focused storytelling for #TeamArthur.</p>
+                    </div>
+                </div>
+
+                <!-- Color Accents Selection -->
+                <div class="mb-4">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Accent Branding Color</label>
+                    <div class="flex space-x-3">
+                        <button onclick="selectColor('#1b4d3e')" class="w-8 h-8 rounded-full bg-[#1b4d3e] border-2 border-white ring-2 ring-[#1b4d3e] transition-all color-dot" id="color-green"></button>
+                        <button onclick="selectColor('#d15c7e')" class="w-8 h-8 rounded-full bg-[#d15c7e] border-2 border-white transition-all color-dot" id="color-pink"></button>
+                        <button onclick="selectColor('#3c4043')" class="w-8 h-8 rounded-full bg-[#3c4043] border-2 border-white transition-all color-dot" id="color-charcoal"></button>
+                    </div>
+                </div>
+
+                <!-- Input fields that update live on the right -->
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Main Quote / Text</label>
+                        <textarea id="overlay-text" rows="2" oninput="drawAsset()" class="w-full p-2.5 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#1b4d3e] focus:border-transparent resize-none"></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Author Name</label>
+                            <input type="text" id="overlay-author" oninput="drawAsset()" class="w-full p-2 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#1b4d3e] focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Title / Company</label>
+                            <input type="text" id="overlay-title" oninput="drawAsset()" class="w-full p-2 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#1b4d3e] focus:border-transparent">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Download Button -->
+            <div class="mt-6">
+                <button onclick="downloadAsset()" class="w-full bg-[#d15c7e] hover:bg-[#b04864] text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Export High-Res Social Post (PNG)</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Right Preview Frame -->
+        <section class="lg:col-span-7 flex flex-col items-center justify-center">
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center w-full max-w-[550px]">
+                <div class="flex justify-between items-center w-full mb-3 px-1">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">
+                        <i class="fa-regular fa-image mr-1"></i> Live Render Frame (Adaptive)
+                    </span>
+                    <button onclick="resetDefault()" class="text-xs text-emerald-800 hover:text-[#1b4d3e] font-semibold transition-all">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Reset
+                    </button>
+                </div>
+
+                <!-- Canvas Box Container -->
+                <div class="w-full aspect-square bg-[#fffaf1] rounded-xl overflow-hidden shadow-inner border border-slate-100 relative flex items-center justify-center">
+                    <canvas id="editor-canvas" width="1080" height="1350" class="w-full h-full object-contain"></canvas>
+                </div>
+
+                <!-- Helpful guidance note below the preview -->
+                <div class="mt-4 bg-slate-50 rounded-xl p-3 w-full border border-slate-100 text-[11px] text-slate-500 leading-relaxed flex items-start space-x-2">
+                    <i class="fa-solid fa-circle-info text-slate-400 mt-0.5"></i>
+                    <p>This builder adheres strictly to our <strong>2026 Brand Architecture Guidelines</strong>: No meme outlines, plenty of premium breathing space, and modern sans-serif fonts to optimize mobile engagement.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-4 px-6 text-center text-xs mt-auto">
+        <p>&copy; 2026 Arthur Rank Hospice Charity (ARHC) Digital Innovation Team. Built for premium social execution.</p>
+    </footer>
+
+    <!-- Core App Logic -->
+    <script>
+        // Set API key to empty string - Runtime automatically handles key injection
+        const apiKey = "";
+
+        // Application State
+        let currentPillar = "spotlight";
+        let currentLayout = "circle-portrait";
+        let currentAccentColor = "#1b4d3e";
+        let currentFormat = "portrait"; // default formatting aspect
+        
+        // Canvas Element Setup
+        const canvas = document.getElementById('editor-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Keep a global reference to the loaded background image so overlays redraw cleanly
+        let activeBackgroundImage = new Image();
+        activeBackgroundImage.crossOrigin = "anonymous";
+
+        // Global reference to high-res user photo upload
+        let uploadedImage = new Image();
+        let hasUploadedImage = false;
+
+        // Preset Prompt Definitions for Imagen 4.0
+        const prompts = {
+            spotlight: "Professional warm portrait of a smiling healthcare nurse or staff member in clinical wear, clean neutral bokeh background, authentic candid photo, soft natural lighting, realistic, high quality, 8k resolution",
+            volunteer: "A group of cheerful corporate volunteers planting flowers and laughing in a sunlit green therapeutic garden, community-led, warm, authentic candid photography, detailed, 8k",
+            demystify: "A peaceful minimalist composition of a wooden row of cute toy ducks standing in a clean line next to soft foliage, light warm background, clean minimalist studio shot, realistic"
+        };
+
+        const defaultTexts = {
+            spotlight: {
+                text: "“Knowing that we can make a direct difference to someone's quality of life is the absolute best part of coming to work every morning.”",
+                author: "Sarah, RGN",
+                title: "Specialist Inpatient Nurse"
+            },
+            volunteer: {
+                text: "“Volunteering with the gardening team today opened our eyes to the sheer warmth and joy that thrives within this amazing home.”",
+                author: "David Harrison",
+                title: "CSR Lead, Cambridge Tech"
+            },
+            demystify: {
+                text: "“When it comes to end-of-life planning, having your ducks in a row isn't about giving up—it's about making sure your choices are honored.”",
+                author: "Ducks in a Row",
+                title: "Get Your Affairs in Order Guide"
+            }
+        };
+
+        // Locked styles mapping for brand alignment consistency
+        const pillarLayouts = {
+            spotlight: {
+                layout: 'circle-portrait',
+                title: 'Circular Frame Template Locked',
+                desc: 'Enforces professional, face-focused storytelling with a clean portrait cutout and an enlarged #TeamArthur hashtag.'
+            },
+            volunteer: {
+                layout: 'minimal-text',
+                title: 'Bottom Block Template Locked',
+                desc: 'Optimized B2B layout. Always features a dark bottom card overlay, corporate text footer, and built-in partner logo slot.'
+            },
+            demystify: {
+                layout: 'quote-card',
+                title: 'Premium Quote Card Locked',
+                desc: 'Ensures absolute readability for Q&As or guide tips, letting technical answers shine.'
+            }
+        };
+
+        // On Page Load
+        window.onload = function() {
+            selectPillar('spotlight');
+        }
+
+        // Handle Pillar selection
+        function selectPillar(pillar) {
+            currentPillar = pillar;
+            hasUploadedImage = false; // Reset uploaded image state so template triggers correctly
+            
+            // Toggle active styles on buttons
+            document.querySelectorAll('.pillar-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-[#1b4d3e]', 'bg-emerald-50');
+                btn.classList.add('border-slate-200');
+            });
+            
+            const activeBtn = document.getElementById(`btn-${pillar}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'border-[#1b4d3e]', 'bg-emerald-50');
+                activeBtn.classList.remove('border-slate-200');
+            }
+
+            // Fill default text templates
+            document.getElementById('prompt-input').value = prompts[pillar];
+            document.getElementById('overlay-text').value = defaultTexts[pillar].text;
+            document.getElementById('overlay-author').value = defaultTexts[pillar].author;
+            document.getElementById('overlay-title').value = defaultTexts[pillar].title;
+
+            // Enforce locked layout standard per pillar
+            const config = pillarLayouts[pillar];
+            currentLayout = config.layout;
+            document.getElementById('locked-style-title').innerText = config.title;
+            document.getElementById('locked-style-desc').innerText = config.desc;
+
+            // Load default fallback background first
+            loadFallbackBackground(pillar);
+        }
+
+        // Set Target Channel Aspect ratio dimensions
+        function selectFormat(formatName) {
+            currentFormat = formatName;
+            
+            // Toggle active styles on format selector buttons
+            document.querySelectorAll('.format-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-[#1b4d3e]', 'bg-emerald-50');
+                btn.classList.add('border-slate-200');
+            });
+            
+            const activeBtn = document.getElementById(`format-${formatName}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'border-[#1b4d3e]', 'bg-emerald-50');
+                activeBtn.classList.remove('border-slate-200');
+            }
+            
+            // Apply target sizes
+            let width = 1080;
+            let height = 1080;
+            if (formatName === 'portrait') {
+                width = 1080;
+                height = 1350;
+            } else if (formatName === 'landscape') {
+                width = 1200;
+                height = 675;
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Crop custom uploads dynamically, or redraw the responsive fallback background
+            if (hasUploadedImage) {
+                cropBackground();
+            } else {
+                loadFallbackBackground(currentPillar);
+            }
+        }
+
+        // Set branding accent color
+        function selectColor(colorHex) {
+            currentAccentColor = colorHex;
+            
+            document.querySelectorAll('.color-dot').forEach(dot => {
+                dot.classList.remove('ring-2', 'ring-[#1b4d3e]');
+            });
+            
+            if (colorHex === '#1b4d3e') document.getElementById('color-green').classList.add('ring-2', 'ring-[#1b4d3e]');
+            if (colorHex === '#d15c7e') document.getElementById('color-pink').classList.add('ring-2', 'ring-[#1b4d3e]');
+            if (colorHex === '#3c4043') document.getElementById('color-charcoal').classList.add('ring-2', 'ring-[#1b4d3e]');
+            
+            drawAsset();
+        }
+
+        // Draw dynamic fallback gradient background responsive to current canvas dimensions
+        function loadFallbackBackground(pillar) {
+            const targetW = canvas.width;
+            const targetH = canvas.height;
+            
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = targetW;
+            tempCanvas.height = targetH;
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            // Render beautiful background design matching the selected theme
+            const grad = tempCtx.createLinearGradient(0, 0, targetW, targetH);
+            if (pillar === 'spotlight') {
+                grad.addColorStop(0, '#fffaf1');
+                grad.addColorStop(1, '#f4ece1');
+            } else if (pillar === 'volunteer') {
+                grad.addColorStop(0, '#f0fdf4');
+                grad.addColorStop(1, '#dcfce7');
+            } else {
+                grad.addColorStop(0, '#f0f9ff');
+                grad.addColorStop(1, '#e0f2fe');
+            }
+            
+            tempCtx.fillStyle = grad;
+            tempCtx.fillRect(0, 0, targetW, targetH);
+            
+            // Subtle branding patterns
+            tempCtx.strokeStyle = 'rgba(27, 77, 62, 0.04)';
+            tempCtx.lineWidth = 12;
+            tempCtx.beginPath();
+            tempCtx.arc(targetW, 0, targetW * 0.4, 0, 2 * Math.PI);
+            tempCtx.stroke();
+            tempCtx.beginPath();
+            tempCtx.arc(targetW, 0, targetW * 0.6, 0, 2 * Math.PI);
+            tempCtx.stroke();
+            
+            // Draw generic placeholder icon
+            tempCtx.fillStyle = 'rgba(27, 77, 62, 0.08)';
+            tempCtx.font = `bold ${Math.min(targetW, targetH) * 0.12}px 'Montserrat'`;
+            tempCtx.textAlign = "center";
+            tempCtx.textBaseline = "middle";
+            
+            let iconCode = "ARHC";
+            if (pillar === 'spotlight') iconCode = "👩‍⚕️";
+            if (pillar === 'volunteer') iconCode = "🤝";
+            if (pillar === 'demystify') iconCode = "🦆";
+            
+            tempCtx.fillText(iconCode, targetW / 2, targetH * 0.45);
+            
+            activeBackgroundImage.onload = function() {
+                drawAsset();
+            }
+            activeBackgroundImage.src = tempCanvas.toDataURL();
+        }
+
+        // Trigger Hidden File Upload
+        function triggerImageUpload() {
+            document.getElementById('image-upload').click();
+        }
+
+        // Handle Image Upload File Stream
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    uploadedImage = img;
+                    hasUploadedImage = true;
+                    cropBackground();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Dynamically crop a high-quality upload to target canvas dimensions (preventing stretching)
+        function cropBackground() {
+            if (!hasUploadedImage) return;
+
+            const targetW = canvas.width;
+            const targetH = canvas.height;
+
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = targetW;
+            tempCanvas.height = targetH;
+            const tempCtx = tempCanvas.getContext('2d');
+
+            const imgAspect = uploadedImage.width / uploadedImage.height;
+            const targetAspect = targetW / targetH;
+            
+            let drawWidth, drawHeight, offsetX, offsetY;
+
+            if (imgAspect > targetAspect) { // Upload is wider than target aspect ratio
+                drawHeight = targetH;
+                drawWidth = targetH * imgAspect;
+                offsetX = -(drawWidth - targetW) / 2;
+                offsetY = 0;
+            } else { // Upload is taller than target aspect ratio
+                drawWidth = targetW;
+                drawHeight = targetW / imgAspect;
+                offsetX = 0;
+                offsetY = -(drawHeight - targetH) / 2;
+            }
+
+            tempCtx.drawImage(uploadedImage, offsetX, offsetY, drawWidth, drawHeight);
+
+            activeBackgroundImage.onload = function() {
+                drawAsset();
+            };
+            activeBackgroundImage.src = tempCanvas.toDataURL();
+        }
+
+        // Gemini AI Copywriter & Prompt Creator Integration
+        async function triggerCopilot() {
+            const storyInput = document.getElementById('ai-story-input').value;
+            const copilotBtn = document.getElementById('copilot-btn');
+            const loader = document.getElementById('copilot-loader');
+
+            if (!storyInput.trim()) return;
+
+            copilotBtn.disabled = true;
+            copilotBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            loader.classList.remove('hidden');
+
+            try {
+                // Call Gemini using fetchWithBackoff and the gemini-2.5-flash-preview-09-2025 model with structure schema
+                const resultJson = await callGeminiCopilot(storyInput);
+                
+                // Parse returned structured output
+                if (resultJson.quote) {
+                    document.getElementById('overlay-text').value = resultJson.quote;
+                }
+                if (resultJson.author) {
+                    document.getElementById('overlay-author').value = resultJson.author;
+                }
+                if (resultJson.title) {
+                    document.getElementById('overlay-title').value = resultJson.title;
+                }
+                if (resultJson.imagePrompt) {
+                    document.getElementById('prompt-input').value = resultJson.imagePrompt;
+                }
+
+                drawAsset();
+
+                // Trigger background generation with newly drafted prompt automatically!
+                if (resultJson.imagePrompt) {
+                    await triggerImageGeneration();
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert("The Gemini AI Copilot is currently offline. You can manually enter your own copy & prompts below.");
+            } finally {
+                loader.classList.add('hidden');
+                copilotBtn.disabled = false;
+                copilotBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Call Gemini Model
+        async function callGeminiCopilot(storyText) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const systemPrompt = "You are a senior brand strategy copywriter for Arthur Rank Hospice Charity (ARHC). You write deeply moving, clinically dignified, yet highly warm social media posts. Never write cheesy or over-curated sentences. Avoid meme formats. Ensure all quotes feel incredibly authentic and grounded. Return clean JSON containing quotes (under 280 characters, do not put quotation marks in the string), appropriate author names, author job titles, and descriptive AI image generation prompts optimized for background scenic composition.";
+            
+            const payload = {
+                contents: [
+                    { parts: [{ text: `Generate content for the pillar: "${currentPillar}". Base the copy on this story description: "${storyText}"` }] }
+                ],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            quote: { type: "STRING", description: "A heartwarming, high-impact quote or advice statement. Under 280 characters. No literal quotation marks." },
+                            author: { type: "STRING", description: "A realistic first name or full name with title." },
+                            title: { type: "STRING", description: "A realistic job title, volunteer status, or local company name." },
+                            imagePrompt: { type: "STRING", description: "A clean, detailed background photo generation prompt tailored to this theme, focusing on authentic, candid photography style with warm natural lighting." }
+                        },
+                        required: ["quote", "author", "title", "imagePrompt"]
+                    }
+                }
+            };
+
+            const options = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            };
+
+            const result = await fetchWithBackoff(url, options);
+            const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (textResponse) {
+                return JSON.parse(textResponse);
+            } else {
+                throw new Error("Invalid response from Gemini model");
+            }
+        }
+
+        // Trigger AI image generation
+        async function triggerImageGeneration() {
+            const promptInput = document.getElementById('prompt-input').value;
+            const generateBtn = document.getElementById('generate-btn');
+            const loader = document.getElementById('loading-indicator');
+            const progressBar = document.getElementById('progress-bar');
+            
+            if (!promptInput.trim()) return;
+
+            // Disable triggers
+            generateBtn.disabled = true;
+            generateBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            loader.classList.remove('hidden');
+            progressBar.style.width = '10%';
+
+            try {
+                // Simulate step progress
+                let progress = 10;
+                const interval = setInterval(() => {
+                    if (progress < 90) {
+                        progress += 10;
+                        progressBar.style.width = `${progress}%`;
+                    }
+                }, 400);
+
+                // API Caller using robust exponential backoff handler
+                const b64Data = await callImagenAPI(promptInput);
+                
+                clearInterval(interval);
+                progressBar.style.width = '100%';
+                
+                // Load base64 directly to background canvas container
+                const img = new Image();
+                img.onload = function() {
+                    uploadedImage = img;
+                    hasUploadedImage = true;
+                    cropBackground();
+                    loader.classList.add('hidden');
+                    generateBtn.disabled = false;
+                    generateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                };
+                img.src = b64Data;
+
+            } catch (err) {
+                console.error(err);
+                alert("The preview environment couldn't connect to the AI model directly. A gorgeous placeholder vector matching your ARHC template has been auto-designed for you instead!");
+                loader.classList.add('hidden');
+                generateBtn.disabled = false;
+                generateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // API Caller with Exponential Backoff
+        async function callImagenAPI(promptText) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`;
+            const payload = {
+                instances: [
+                    { prompt: promptText }
+                ],
+                parameters: {
+                    sampleCount: 1,
+                    aspectRatio: "1:1"
+                }
+            };
+
+            const options = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            };
+
+            const result = await fetchWithBackoff(url, options);
+            if (result.predictions && result.predictions[0] && result.predictions[0].bytesBase64Encoded) {
+                return `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+            } else {
+                throw new Error("Invalid API response shape");
+            }
+        }
+
+        // Robust Fetch backoff implementation matching strategic instructions
+        async function fetchWithBackoff(url, options, retries = 5, delay = 1000) {
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                if (retries > 0) {
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    return fetchWithBackoff(url, options, retries - 1, delay * 2);
+                }
+                throw error;
+            }
+        }
+
+        // Redraw canvas with modern overlays based on selections
+        function drawAsset() {
+            // 1. Draw Background Image
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(activeBackgroundImage, 0, 0, canvas.width, canvas.height);
+
+            // Get Input values
+            const quoteText = document.getElementById('overlay-text').value;
+            const authorText = document.getElementById('overlay-author').value;
+            const titleText = document.getElementById('overlay-title').value;
+
+            // 2. Draw layout styles matching our branding fixes
+            if (currentLayout === 'quote-card') {
+                drawQuoteCardOverlay(quoteText, authorText, titleText);
+            } else if (currentLayout === 'circle-portrait') {
+                drawCirclePortraitOverlay(quoteText, authorText, titleText);
+            } else {
+                drawMinimalTextOverlay(quoteText, authorText, titleText);
+            }
+
+            // 3. Top Branding Bar / Logo Accent (Unified Header)
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.roundRect(40, 40, 240, 60, 12);
+            ctx.fill();
+
+            ctx.fillStyle = "#1b4d3e";
+            ctx.beginPath();
+            ctx.arc(70, 70, 18, 0, 2 * Math.PI);
+            ctx.fill();
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 16px 'Montserrat'";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("AR", 70, 70);
+
+            ctx.fillStyle = "#1b4d3e";
+            ctx.font = "800 16px 'Montserrat'";
+            ctx.textAlign = "left";
+            ctx.fillText("Arthur Rank", 100, 62);
+            ctx.font = "bold 10px 'Montserrat'";
+            ctx.fillStyle = "#d15c7e";
+            ctx.fillText("Hospice Charity", 100, 78);
+        }
+
+        // Layout A: Quote Card Template Style (Optimized Adaptive Coordinates)
+        function drawQuoteCardOverlay(quote, author, title) {
+            const W = canvas.width;
+            const H = canvas.height;
+            
+            const marginX = W * 0.055;
+            const cardW = W - (2 * marginX);
+            const bottomPadding = Math.min(H * 0.06, 60);
+            const cardH = Math.min(H * 0.55, 620);
+            const cardY = H - cardH - bottomPadding;
+
+            // Semi-transparent card backing block
+            ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+            ctx.beginPath();
+            ctx.roundRect(marginX, cardY, cardW, cardH, 24);
+            ctx.fill();
+
+            // Accent border
+            ctx.strokeStyle = currentAccentColor;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.roundRect(marginX, cardY, cardW, cardH, 24);
+            ctx.stroke();
+
+            // Quotes Icon SVG
+            ctx.fillStyle = currentAccentColor + "15"; // Soft opacity
+            const quoteFontSize = Math.min(cardH * 0.5, 260);
+            ctx.font = `italic ${quoteFontSize}px 'Playfair Display'`;
+            ctx.textAlign = "left";
+            ctx.textBaseline = "alphabetic";
+            ctx.fillText("“", marginX + 40, cardY + (cardH * 0.45));
+
+            // Draw Core Message
+            ctx.fillStyle = "#1e293b";
+            const quoteSize = Math.max(Math.min(W * 0.026, 28), 18);
+            ctx.font = `bold ${quoteSize}px 'Montserrat'`;
+            ctx.textBaseline = "top";
+            
+            const textY = cardY + Math.min(cardH * 0.15, 80);
+            const textMaxW = cardW - 120;
+            const textLineHeight = quoteSize * 1.5;
+            wrapText(ctx, quote, marginX + 60, textY, textMaxW, textLineHeight);
+
+            // Author Name
+            ctx.fillStyle = currentAccentColor;
+            const authorSize = Math.max(Math.min(W * 0.022, 24), 16);
+            ctx.font = `800 ${authorSize}px 'Montserrat'`;
+            ctx.textAlign = "left";
+            ctx.textBaseline = "top";
+            const authorY = cardY + cardH - Math.min(cardH * 0.25, 120);
+            ctx.fillText(author.toUpperCase(), marginX + 60, authorY);
+
+            // Subtitle
+            ctx.fillStyle = "#64748b";
+            const titleSize = Math.max(Math.min(W * 0.017, 18), 12);
+            ctx.font = `500 ${titleSize}px 'Montserrat'`;
+            ctx.fillText(title, marginX + 60, authorY + authorSize + 10);
+        }
+
+        // Layout B: Circular Portrait style (Optimized Adaptive Coordinates for Aspect Ratios)
+        function drawCirclePortraitOverlay(quote, author, title) {
+            const W = canvas.width;
+            const H = canvas.height;
+            
+            // Overwrite with brand green block
+            ctx.fillStyle = "#1b4d3e";
+            ctx.fillRect(0, 0, W, H);
+
+            const isVertical = H > W;
+
+            if (isVertical) {
+                // --- PORTRAIT LAYOUT (Vertically Stacked) ---
+                const centerX = W * 0.5;
+                const centerY = H * 0.32;
+                const radius = Math.min(W * 0.26, H * 0.22);
+
+                // Circular Cutout
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                ctx.clip();
+                ctx.drawImage(activeBackgroundImage, 320 - 260, 540 - 260, 520, 520, centerX - radius, centerY - radius, radius * 2, radius * 2);
+                ctx.restore();
+
+                // Border around circle
+                ctx.strokeStyle = "#fffaf1";
+                ctx.lineWidth = 10;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+
+                // Card underneath
+                const cardX = W * 0.06;
+                const cardY = centerY + radius + 35;
+                const cardW = W - (2 * cardX);
+                const cardH = H - cardY - 60;
+
+                ctx.fillStyle = "#fffaf1";
+                ctx.beginPath();
+                ctx.roundRect(cardX, cardY, cardW, cardH, 24);
+                ctx.fill();
+
+                // Text wrapper
+                ctx.fillStyle = "#1e293b";
+                const quoteSize = Math.max(Math.min(W * 0.024, 24), 16);
+                ctx.font = `bold ${quoteSize}px 'Montserrat'`;
+                ctx.textAlign = "left";
+                ctx.textBaseline = "top";
+                wrapText(ctx, quote, cardX + 40, cardY + 40, cardW - 80, quoteSize * 1.5);
+
+                // Author Name
+                ctx.fillStyle = currentAccentColor;
+                const authorSize = Math.max(Math.min(W * 0.022, 22), 15);
+                ctx.font = `800 ${authorSize}px 'Montserrat'`;
+                const authorY = cardY + cardH - 140;
+                ctx.fillText(author, cardX + 40, authorY);
+
+                // Title
+                ctx.fillStyle = "#64748b";
+                const titleSize = Math.max(Math.min(W * 0.016, 16), 11);
+                ctx.font = `500 ${titleSize}px 'Montserrat'`;
+                ctx.fillText(title, cardX + 40, authorY + authorSize + 6);
+
+                // Enlarged #TeamArthur Badge at the bottom right
+                ctx.fillStyle = "#d15c7e";
+                ctx.beginPath();
+                ctx.roundRect(cardX + cardW - 250, cardY + cardH - 100, 210, 44, 8);
+                ctx.fill();
+                
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 15px 'Montserrat'";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText("#TeamArthur", cardX + cardW - 145, cardY + cardH - 78);
+
+            } else {
+                // --- LANDSCAPE / SQUARE LAYOUT (Side-by-Side) ---
+                const centerX = W * 0.3;
+                const centerY = H * 0.54;
+                const radius = Math.min(W * 0.22, H * 0.32);
+
+                // Circular Cutout
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                ctx.clip();
+                ctx.drawImage(activeBackgroundImage, 0, 0, activeBackgroundImage.width, activeBackgroundImage.height, centerX - radius, centerY - radius, radius * 2, radius * 2);
+                ctx.restore();
+
+                // Border around circle
+                ctx.strokeStyle = "#fffaf1";
+                ctx.lineWidth = 10;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+
+                // Right block holding content
+                const cardX = centerX + radius + 40;
+                const cardW = W - cardX - 60;
+                const cardY = H * 0.22;
+                const cardH = H * 0.65;
+
+                ctx.fillStyle = "#fffaf1";
+                ctx.beginPath();
+                ctx.roundRect(cardX, cardY, cardW, cardH, 24);
+                ctx.fill();
+
+                ctx.fillStyle = "#1e293b";
+                const quoteSize = Math.max(Math.min(W * 0.022, 24), 15);
+                ctx.font = `bold ${quoteSize}px 'Montserrat'`;
+                ctx.textAlign = "left";
+                ctx.textBaseline = "top";
+                wrapText(ctx, quote, cardX + 40, cardY + 40, cardW - 80, quoteSize * 1.5);
+
+                // Author Name
+                ctx.fillStyle = currentAccentColor;
+                const authorSize = Math.max(Math.min(W * 0.02, 22), 14);
+                ctx.font = `800 ${authorSize}px 'Montserrat'`;
+                const authorY = cardY + cardH - 120;
+                ctx.fillText(author, cardX + 40, authorY);
+
+                // Title
+                ctx.fillStyle = "#64748b";
+                const titleSize = Math.max(Math.min(W * 0.015, 16), 11);
+                ctx.font = `500 ${titleSize}px 'Montserrat'`;
+                ctx.fillText(title, cardX + 40, authorY + authorSize + 6);
+
+                // Enlarged #TeamArthur badge
+                ctx.fillStyle = "#d15c7e";
+                ctx.beginPath();
+                ctx.roundRect(cardX + cardW - 220, cardY + cardH - 100, 180, 40, 8);
+                ctx.fill();
+                
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 13px 'Montserrat'";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText("#TeamArthur", cardX + cardW - 130, cardY + cardH - 80);
+            }
+        }
+
+        // Layout C: Minimal bottom layout with rich padding (Optimized Adaptive Coordinates)
+        function drawMinimalTextOverlay(quote, author, title) {
+            const W = canvas.width;
+            const H = canvas.height;
+            
+            // Soft gradient shade on the bottom
+            const gradient = ctx.createLinearGradient(0, H * 0.4, 0, H);
+            gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+            gradient.addColorStop(0.3, "rgba(0, 0, 0, 0.45)");
+            gradient.addColorStop(1, "rgba(0, 0, 0, 0.95)");
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, H * 0.4, W, H * 0.6);
+
+            // Clean, high-impact branding border block
+            const barH = Math.min(H * 0.22, 180);
+            const barY = H - barH - Math.min(H * 0.12, 140);
+            
+            ctx.fillStyle = currentAccentColor;
+            ctx.fillRect(60, barY, 6, barH);
+
+            ctx.fillStyle = "#ffffff";
+            const quoteSize = Math.max(Math.min(W * 0.026, 30), 16);
+            ctx.font = `bold ${quoteSize}px 'Montserrat'`;
+            ctx.textAlign = "left";
+            ctx.textBaseline = "top";
+            wrapText(ctx, quote, 90, barY + 15, W - 180, quoteSize * 1.5);
+
+            // Author Name
+            ctx.fillStyle = "#fffaf1";
+            const authorSize = Math.max(Math.min(W * 0.02, 22), 13);
+            ctx.font = `800 ${authorSize}px 'Montserrat'`;
+            ctx.fillText(`${author.toUpperCase()}  |  ${title}`, 90, H - 70);
+
+            // Built-in Corporate Partner Logo Placeholder box (Corporate quote cards)
+            const logoW = Math.max(Math.min(W * 0.18, 200), 140);
+            const logoH = logoW * 0.25;
+            const logoX = W - logoW - 60;
+            const logoY = H - logoH - 60;
+
+            ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+            ctx.beginPath();
+            ctx.roundRect(logoX, logoY, logoW, logoH, 8);
+            ctx.fill();
+            
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.roundRect(logoX, logoY, logoW, logoH, 8);
+            ctx.stroke();
+            
+            ctx.fillStyle = "#ffffff";
+            const logoFontSize = Math.max(logoW * 0.055, 9);
+            ctx.font = `bold ${logoFontSize}px 'Montserrat'`;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("PARTNER LOGO", logoX + (logoW / 2), logoY + (logoH / 2));
+        }
+
+        // Reset default template assets
+        function resetDefault() {
+            selectPillar(currentPillar);
+        }
+
+        // Custom canvas text wrap processor
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            let line = '';
+
+            for (let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' ';
+                let metrics = context.measureText(testLine);
+                let testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    context.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                }
+                else {
+                    line = testLine;
+                }
+            }
+            context.fillText(line, x, y);
+        }
+
+        // Dynamic local downloader utility
+        function downloadAsset() {
+            const dataUrl = canvas.toDataURL("image/png");
+            const tempLink = document.createElement("a");
+            tempLink.download = `ARHC_${currentPillar}_2026_Post.png`;
+            tempLink.href = dataUrl;
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+        }
+    </script>
+</body>
+</html>
